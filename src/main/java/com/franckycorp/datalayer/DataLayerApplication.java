@@ -3,9 +3,12 @@ package com.franckycorp.datalayer;
 import com.franckycorp.datalayer.model.Category;
 import com.franckycorp.datalayer.model.Comment;
 import com.franckycorp.datalayer.model.Product;
+
 import com.franckycorp.datalayer.service.CategoryService;
 import com.franckycorp.datalayer.service.CommentService;
 import com.franckycorp.datalayer.service.ProductService;
+
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -30,6 +33,7 @@ public class DataLayerApplication implements CommandLineRunner {
     }
 
     @Override
+    @Transactional
     public void run(String... args) throws Exception {
 
         Iterable<Product> products = productService.getProducts();
@@ -52,5 +56,13 @@ public class DataLayerApplication implements CommandLineRunner {
         Optional<Comment> optComment = commentService.getCommentById(1);
         Comment commentId1 = optComment.get();
         System.out.println(commentId1.getContent());
+
+        productId1.getComments().forEach(
+                comment -> System.out.println(comment.getContent())
+        );
+
+        categoryId1.getProducts().forEach(
+                product -> System.out.println(product.getName())
+        );
     }
 }
