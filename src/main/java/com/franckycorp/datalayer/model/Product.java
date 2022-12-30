@@ -29,7 +29,12 @@ public class Product {
             fetch = FetchType.EAGER
     )
     @JoinColumn(name = "produit_id")
-    private List<Comment> comments = new ArrayList<>();
+    List<Comment> comments = new ArrayList<>();
+
+    @ManyToMany(
+                mappedBy = "products"
+    )
+    List<Category> categories = new ArrayList<>();
 
     public int getProductId() {
         return productId;
@@ -69,5 +74,13 @@ public class Product {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    public List<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
     }
 }
