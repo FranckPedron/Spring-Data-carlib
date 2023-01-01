@@ -4,6 +4,8 @@ import com.franckycorp.datalayer.model.Category;
 import com.franckycorp.datalayer.model.Comment;
 import com.franckycorp.datalayer.model.Product;
 
+import com.franckycorp.datalayer.repository.CategoryRepository;
+import com.franckycorp.datalayer.repository.CommentRepository;
 import com.franckycorp.datalayer.service.CategoryService;
 import com.franckycorp.datalayer.service.CommentService;
 import com.franckycorp.datalayer.service.ProductService;
@@ -27,6 +29,8 @@ public class DataLayerApplication implements CommandLineRunner {
 
     @Autowired
     private CategoryService categoryService;
+    @Autowired
+    private CommentRepository commentRepository;
 
     public static void main(String[] args) {
         SpringApplication.run(DataLayerApplication.class, args);
@@ -36,32 +40,45 @@ public class DataLayerApplication implements CommandLineRunner {
     @Transactional
     public void run(String... args) throws Exception {
 
-        Iterable<Product> products = productService.getProducts();
-        products.forEach(product -> System.out.println(product.getName()));
+        showCategories();
 
-        Iterable<Category> categories = categoryService.getCategories();
-        categories.forEach(category -> System.out.println(category.getName()));
+        Category newCategory = new Category();
+        newCategory.setName("Promotion");
 
-        Iterable<Comment> comments = commentService.getComments();
-        comments.forEach(comment -> System.out.println(comment.getContent()));
+        newCategory = categoryService.addCategory(newCategory);
 
-        Optional<Product> optProduct = productService.getProductById(1);
-        Product productId1 = optProduct.get();
-        System.out.println(productId1.getName());
+        showCategories();
 
-        Optional<Category> optCategory = categoryService.getCategoryById(1);
-        Category categoryId1 = optCategory.get();
-        System.out.println(categoryId1.getName());
+        Product newProduct = new Product();
+        newProduct.setName("AssuranceTest");
+        newProduct.setDescription("Nouvelle assurance en cours de test");
+        newProduct.setCost(1180);
 
-        Optional<Comment> optComment = commentService.getCommentById(1);
-        Comment commentId1 = optComment.get();
-        System.out.println(commentId1.getContent());
+        newCategory.addProduct(newProduct);
 
-        productId1.getComments().forEach(
-                comment -> System.out.println(comment.getContent())
+        newProduct = productService.addProduct(newProduct);
+
+        showProducts();
+
+        newProduct.getCategories().forEach(
+                category -> System.out.println(category.getName())
         );
 
-        categoryId1.getProducts().forEach(
+        Comment newComment = new Comment();
+        newComment.setContent("Assurance extra !");
+        newProduct.addComment(newComment);
+
+        commentService.addComment(newComment);
+    }
+
+    public void showCategories() {
+        categoryService.getCategories().forEach(
+                category -> System.out.println(category.getName())
+        );
+    }
+
+    public void showProducts() {
+        productService.getProducts().forEach(
                 product -> System.out.println(product.getName())
         );
     }

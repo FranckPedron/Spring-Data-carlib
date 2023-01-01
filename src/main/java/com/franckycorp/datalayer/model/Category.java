@@ -55,4 +55,14 @@ public class Category {
     public void setProducts(List<Product> products) {
         this.products = products;
     }
+
+    public void addProduct(Product product) {
+        products.add(product);
+        product.getCategories().add(this);
+    }
+
+    public void removeProduit(Product product) {
+        products.remove(product);
+        product.getCategories().remove(this);
+    }
 }

@@ -14,8 +14,11 @@ public class Comment {
     @Column(name = "contenu")
     private String content;
 
-    @Column(name = "produit_id")
-    private int productId;
+    @ManyToOne(
+            cascade = CascadeType.ALL
+    )
+    @JoinColumn(name = "produit_id")
+    private Product product;
 
     public int getCommentId() {
         return commentId;
@@ -33,11 +36,11 @@ public class Comment {
         this.content = content;
     }
 
-    public int getProductId() {
-        return productId;
+    public Product getProduct() {
+        return product;
     }
 
-    public void setProductId(int productId) {
-        this.productId = productId;
+    public void setProduct(Product product) {
+        this.product = product;
     }
 }

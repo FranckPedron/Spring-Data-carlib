@@ -18,21 +18,21 @@ public class Product {
     private String name;
 
     @Column(name = "description")
-    private  String description;
+    private String description;
 
     @Column(name = "cout")
     private int cost;
 
     @OneToMany(
+            mappedBy = "product",
             cascade = CascadeType.ALL,
-            orphanRemoval = true,
-            fetch = FetchType.EAGER
+            orphanRemoval = true
     )
-    @JoinColumn(name = "produit_id")
     List<Comment> comments = new ArrayList<>();
 
     @ManyToMany(
-                mappedBy = "products"
+            mappedBy = "products",
+            cascade = CascadeType.ALL
     )
     List<Category> categories = new ArrayList<>();
 
@@ -82,5 +82,15 @@ public class Product {
 
     public void setCategories(List<Category> categories) {
         this.categories = categories;
+    }
+
+    public void addComment(Comment comment) {
+        comments.add(comment);
+        comment.setProduct(this);
+    }
+
+    public void removeComment(Comment comment) {
+        comments.remove(comment);
+        comment.setProduct(null);
     }
 }
