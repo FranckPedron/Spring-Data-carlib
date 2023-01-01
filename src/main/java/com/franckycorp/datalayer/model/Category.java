@@ -2,11 +2,13 @@ package com.franckycorp.datalayer.model;
 
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@DynamicUpdate
 @Table(name = "categorie")
 public class Category {
 
