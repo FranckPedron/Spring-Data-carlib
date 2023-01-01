@@ -6,4 +6,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ProductRepository extends CrudRepository<Product, Integer> {
+
+    Iterable<Product> findByName(String name);
+
+    Iterable<Product> findByCategoriesName(String name);
+
 }
