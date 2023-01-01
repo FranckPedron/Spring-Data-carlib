@@ -1,8 +1,12 @@
 package com.franckycorp.datalayer;
 
+import com.franckycorp.datalayer.model.Category;
+import com.franckycorp.datalayer.model.Comment;
 import com.franckycorp.datalayer.model.Product;
 
+import com.franckycorp.datalayer.repository.CategoryRepository;
 import com.franckycorp.datalayer.repository.CommentRepository;
+
 import com.franckycorp.datalayer.service.CategoryService;
 import com.franckycorp.datalayer.service.CommentService;
 import com.franckycorp.datalayer.service.ProductService;
@@ -24,6 +28,7 @@ public class DataLayerApplication implements CommandLineRunner {
 
     @Autowired
     private CategoryService categoryService;
+
     @Autowired
     private CommentRepository commentRepository;
 
@@ -40,6 +45,18 @@ public class DataLayerApplication implements CommandLineRunner {
 
         searchResults = productService.getProductsByCategoryName("standard");
         searchResults.forEach(product -> System.out.println(product.getName()));
+
+        searchResults = productService.getProductsByCostLessThan(1000);
+        searchResults.forEach(product -> System.out.println(product.getName()));
+
+        Iterable<Category> searchCategory = categoryService.getCategoryByName("Standard");
+        searchCategory.forEach(category -> System.out.println(category.getCategoryId()));
+
+        searchCategory = categoryService.getCategoriesByProductName("AssuranceTousRisques");
+        searchCategory.forEach(category -> System.out.println(category.getName()));
+
+        Iterable<Comment> searchComments = commentService.getCommentContaining("deçu");
+        searchComments.forEach(comment -> System.out.println(comment.getContent()));
     }
 
     public void showCategories() {
