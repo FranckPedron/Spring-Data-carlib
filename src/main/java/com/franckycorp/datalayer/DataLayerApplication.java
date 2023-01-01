@@ -1,10 +1,7 @@
 package com.franckycorp.datalayer;
 
-import com.franckycorp.datalayer.model.Category;
-import com.franckycorp.datalayer.model.Comment;
 import com.franckycorp.datalayer.model.Product;
 
-import com.franckycorp.datalayer.repository.CategoryRepository;
 import com.franckycorp.datalayer.repository.CommentRepository;
 import com.franckycorp.datalayer.service.CategoryService;
 import com.franckycorp.datalayer.service.CommentService;
@@ -15,8 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import java.util.Optional;
 
 @SpringBootApplication
 public class DataLayerApplication implements CommandLineRunner {
@@ -40,35 +35,14 @@ public class DataLayerApplication implements CommandLineRunner {
     @Transactional
     public void run(String... args) throws Exception {
 
-        showCategories();
+        Product existingProduct = productService.getProductById(5).get();
+        System.out.println(existingProduct.getCost());
 
-        Category newCategory = new Category();
-        newCategory.setName("Promotion");
+        existingProduct.setCost(2000);
+        productService.saveProduct(existingProduct);
 
-        newCategory = categoryService.addCategory(newCategory);
-
-        showCategories();
-
-        Product newProduct = new Product();
-        newProduct.setName("AssuranceTest");
-        newProduct.setDescription("Nouvelle assurance en cours de test");
-        newProduct.setCost(1180);
-
-        newCategory.addProduct(newProduct);
-
-        newProduct = productService.addProduct(newProduct);
-
-        showProducts();
-
-        newProduct.getCategories().forEach(
-                category -> System.out.println(category.getName())
-        );
-
-        Comment newComment = new Comment();
-        newComment.setContent("Assurance extra !");
-        newProduct.addComment(newComment);
-
-        commentService.addComment(newComment);
+        existingProduct = productService.getProductById(5).get();
+        System.out.println(existingProduct.getCost());
     }
 
     public void showCategories() {

@@ -1,12 +1,14 @@
 package com.franckycorp.datalayer.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "produit")
+@DynamicUpdate
 public class Product {
 
     @Id

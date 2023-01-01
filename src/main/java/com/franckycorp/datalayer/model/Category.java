@@ -27,7 +27,7 @@ public class Category {
     )
     @JoinTable(
             name = "categorie_produit",
-            joinColumns = @JoinColumn(name="categorie_id"),
+            joinColumns = @JoinColumn(name = "categorie_id"),
             inverseJoinColumns = @JoinColumn(name = "produit_id")
     )
     private List<Product> products = new ArrayList<>();
